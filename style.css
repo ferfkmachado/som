@@ -1,0 +1,776 @@
+/* ===== RESET E ESTILOS GLOBAIS ===== */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  -webkit-tap-highlight-color: transparent;
+}
+
+html,
+body {
+  height: 100%;
+  overflow-x: hidden;
+}
+
+body {
+  background: #0a0a0f;
+  color: #e0e0e0;
+  min-height: 100vh;
+  min-height: 100dvh; /* Suporte a viewport dinâmico mobile */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  padding: clamp(8px, 2vw, 20px);
+  background-image: radial-gradient(circle at 50% 0%, #1a1a2e 0%, #0a0a0f 70%);
+}
+
+.container {
+  max-width: 800px;
+  width: 100%;
+  background: rgba(20, 20, 35, 0.85);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-radius: clamp(16px, 3vw, 24px);
+  padding: clamp(16px, 4vw, 30px);
+  box-shadow:
+    0 20px 60px rgba(0, 0, 0, 0.8),
+    0 0 0 1px rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  margin: auto 0;
+  display: flex;
+  flex-direction: column;
+  gap: clamp(10px, 2vh, 16px);
+}
+
+h1 {
+  text-align: center;
+  font-weight: 300;
+  font-size: clamp(1.1rem, 4.5vw, 2rem);
+  letter-spacing: clamp(1px, 0.5vw, 4px);
+  text-transform: uppercase;
+  color: #fff;
+  text-shadow: 0 0 20px rgba(100, 200, 255, 0.3);
+  line-height: 1.2;
+}
+
+.subtitle {
+  text-align: center;
+  font-size: clamp(0.65rem, 2vw, 0.85rem);
+  color: #666;
+  margin-top: -6px;
+  letter-spacing: clamp(1px, 0.3vw, 2px);
+}
+
+/* ===== PAINEL DE CONTROLE ===== */
+.controls {
+  display: flex;
+  flex-wrap: wrap;
+  gap: clamp(8px, 1.5vw, 15px);
+  justify-content: center;
+  align-items: center;
+}
+
+.btn {
+  padding: clamp(9px, 1.5vh, 12px) clamp(16px, 3vw, 28px);
+  border: none;
+  border-radius: 50px;
+  font-size: clamp(0.75rem, 2vw, 0.95rem);
+  font-weight: 600;
+  cursor: pointer;
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.3s ease,
+    background 0.3s ease;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.btn:active {
+  transform: scale(0.97);
+}
+
+.btn-primary {
+  background: linear-gradient(135deg, #00c6ff, #0072ff);
+  color: #fff;
+  box-shadow: 0 4px 20px rgba(0, 114, 255, 0.4);
+}
+
+.btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 25px rgba(0, 114, 255, 0.6);
+}
+
+.btn-primary.active {
+  background: linear-gradient(135deg, #ff416c, #ff4b2b);
+  box-shadow: 0 4px 20px rgba(255, 75, 43, 0.4);
+}
+
+.btn-secondary {
+  background: rgba(255, 255, 255, 0.08);
+  color: #aaa;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.btn-secondary:hover {
+  background: rgba(255, 255, 255, 0.15);
+  color: #fff;
+}
+
+.btn-secondary.active {
+  background: rgba(0, 198, 255, 0.2);
+  border-color: #00c6ff;
+  color: #00c6ff;
+}
+
+.string-selector {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: clamp(4px, 1vw, 8px);
+  width: 100%;
+  max-width: 480px;
+  margin: 0 auto;
+}
+
+.string-btn {
+  aspect-ratio: 1 / 1;
+  width: 100%;
+  border-radius: 50%;
+  border: 2px solid rgba(255, 255, 255, 0.15);
+  background: rgba(255, 255, 255, 0.05);
+  color: #888;
+  font-size: clamp(0.7rem, 2vw, 0.9rem);
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.25s ease;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  line-height: 1;
+  padding: 0;
+  min-width: 0;
+}
+
+.string-btn:hover {
+  border-color: rgba(255, 255, 255, 0.4);
+  color: #ccc;
+}
+
+.string-btn.active {
+  border-color: #00c6ff;
+  background: rgba(0, 198, 255, 0.15);
+  color: #00c6ff;
+  box-shadow: 0 0 20px rgba(0, 198, 255, 0.3);
+}
+
+.string-btn .note-label {
+  font-size: clamp(0.5rem, 1.4vw, 0.7rem);
+  font-weight: 400;
+  opacity: 0.7;
+  margin-top: 1px;
+}
+
+/* ===== VISUALIZAÇÃO ===== */
+.canvas-wrapper {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 10 / 3;
+  max-height: 260px;
+  border-radius: clamp(10px, 2vw, 16px);
+  overflow: hidden;
+  background: #06060a;
+  border: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+canvas {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+/* ===== LEITURA DE DADOS ===== */
+.readings {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: clamp(6px, 1.5vw, 12px);
+}
+
+.reading-card {
+  background: rgba(255, 255, 255, 0.04);
+  border-radius: clamp(10px, 2vw, 14px);
+  padding: clamp(8px, 2vw, 16px) clamp(4px, 1vw, 12px);
+  text-align: center;
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  transition: border-color 0.3s ease;
+  min-width: 0;
+  overflow: hidden;
+}
+
+.reading-card .label {
+  font-size: clamp(0.55rem, 1.6vw, 0.7rem);
+  text-transform: uppercase;
+  letter-spacing: clamp(1px, 0.3vw, 2px);
+  color: #555;
+  margin-bottom: 4px;
+  white-space: nowrap;
+}
+
+.reading-card .value {
+  font-size: clamp(0.95rem, 3.5vw, 1.6rem);
+  font-weight: 700;
+  color: #fff;
+  font-variant-numeric: tabular-nums;
+  line-height: 1.2;
+  word-break: break-word;
+}
+
+.reading-card .value.note {
+  color: #00c6ff;
+  font-size: clamp(1.2rem, 4.5vw, 2rem);
+}
+
+.reading-card .value.cents {
+  font-size: clamp(0.85rem, 3vw, 1.4rem);
+}
+
+.reading-card .value.cents.flat {
+  color: #ffa500;
+}
+.reading-card .value.cents.sharp {
+  color: #ff4b2b;
+}
+.reading-card .value.cents.tuned {
+  color: #00e676;
+}
+
+/* ===== BARRA DE AFINAÇÃO ===== */
+.tuner-bar-container {
+  position: relative;
+  width: 100%;
+  margin-top: 4px;
+}
+
+.tuner-bar {
+  position: relative;
+  width: 100%;
+  height: clamp(6px, 1.2vh, 8px);
+  background: rgba(255, 255, 255, 0.06);
+  border-radius: 4px;
+  margin-top: clamp(14px, 3vh, 26px);
+  overflow: hidden;
+}
+
+.tuner-bar .center-mark {
+  position: absolute;
+  left: 50%;
+  top: -6px;
+  width: 2px;
+  height: clamp(16px, 3vh, 20px);
+  background: rgba(255, 255, 255, 0.2);
+  transform: translateX(-50%);
+  border-radius: 1px;
+}
+
+.tuner-bar .indicator {
+  position: absolute;
+  top: -6px;
+  width: clamp(4px, 1vw, 6px);
+  height: clamp(18px, 3.5vh, 24px);
+  border-radius: 3px;
+  transform: translateX(-50%);
+  transition:
+    left 0.15s ease,
+    background 0.3s ease;
+  box-shadow: 0 0 15px currentColor;
+}
+
+.tuner-labels {
+  display: flex;
+  justify-content: space-between;
+  font-size: clamp(0.55rem, 1.6vw, 0.7rem);
+  color: #444;
+  margin-top: 6px;
+  letter-spacing: 1px;
+}
+
+.status-text {
+  text-align: center;
+  font-size: clamp(0.85rem, 2.5vw, 1.1rem);
+  font-weight: 600;
+  letter-spacing: clamp(1.5px, 0.5vw, 3px);
+  text-transform: uppercase;
+  margin-top: 8px;
+  transition: color 0.3s ease;
+  min-height: 24px;
+}
+
+.status-text.flat {
+  color: #ffa500;
+}
+.status-text.sharp {
+  color: #ff4b2b;
+}
+.status-text.tuned {
+  color: #00e676;
+}
+.status-text.idle {
+  color: #444;
+}
+
+/* ===== RESPONSIVIDADE ===== */
+
+/* Tablets pequenos e celulares grandes */
+@media (max-width: 640px) {
+  .container {
+    gap: 12px;
+  }
+  .btn {
+    padding: 10px 18px;
+  }
+  .string-selector {
+    max-width: 360px;
+  }
+  .canvas-wrapper {
+    max-height: 200px;
+  }
+}
+
+/* Celulares médios */
+@media (max-width: 480px) {
+  body {
+    padding: 8px;
+  }
+  .container {
+    gap: 10px;
+    padding: 14px;
+  }
+  .string-selector {
+    max-width: 320px;
+    gap: 5px;
+  }
+  .reading-card .value {
+    font-size: 1rem;
+  }
+  .reading-card .value.note {
+    font-size: 1.3rem;
+  }
+  .reading-card .value.cents {
+    font-size: 0.95rem;
+  }
+  .canvas-wrapper {
+    aspect-ratio: 5 / 3;
+    max-height: 180px;
+  }
+  .tuner-labels {
+    font-size: 0.55rem;
+  }
+}
+
+/* Celulares pequenos */
+@media (max-width: 380px) {
+  .container {
+    padding: 12px 10px;
+    gap: 8px;
+  }
+  h1 {
+    letter-spacing: 1px;
+  }
+  .controls {
+    gap: 6px;
+  }
+  .btn {
+    padding: 8px 14px;
+    font-size: 0.7rem;
+  }
+  .string-selector {
+    max-width: 280px;
+    gap: 4px;
+  }
+  .string-btn {
+    border-width: 1.5px;
+  }
+  .reading-card {
+    padding: 6px 4px;
+  }
+  .reading-card .label {
+    letter-spacing: 0.5px;
+  }
+  .reading-card .value {
+    font-size: 0.9rem;
+  }
+  .reading-card .value.note {
+    font-size: 1.15rem;
+  }
+  .reading-card .value.cents {
+    font-size: 0.85rem;
+  }
+  .canvas-wrapper {
+    aspect-ratio: 2 / 1;
+    max-height: 150px;
+  }
+  .tuner-labels span:first-child,
+  .tuner-labels span:last-child {
+    font-size: 0.5rem;
+  }
+}
+
+/* Celulares muito pequenos em paisagem / altura reduzida */
+@media (max-height: 620px) and (orientation: landscape) {
+  body {
+    padding: 6px;
+  }
+  .container {
+    gap: 8px;
+    padding: 12px;
+    max-width: 95vw;
+  }
+  h1 {
+    font-size: 1rem;
+  }
+  .subtitle {
+    display: none;
+  }
+  .canvas-wrapper {
+    max-height: 120px;
+    aspect-ratio: 4 / 1;
+  }
+  .string-selector {
+    max-width: 380px;
+  }
+  .reading-card {
+    padding: 6px 4px;
+  }
+  .reading-card .value {
+    font-size: 0.9rem;
+  }
+  .reading-card .value.note {
+    font-size: 1.1rem;
+  }
+  .status-text {
+    margin-top: 4px;
+    font-size: 0.85rem;
+  }
+}
+
+/* Ajustes para dispositivos com hover desabilitado (touch) */
+@media (hover: none) {
+  .btn:hover,
+  .string-btn:hover {
+    transform: none;
+    box-shadow: none;
+  }
+  .btn-primary:hover {
+    transform: none;
+  }
+}
+
+/* Suporte a safe area (iPhone notch) */
+@supports (padding: max(0px)) {
+  body {
+    padding-left: max(8px, env(safe-area-inset-left));
+    padding-right: max(8px, env(safe-area-inset-right));
+    padding-bottom: max(8px, env(safe-area-inset-bottom));
+  }
+}
+
+/* ===== PRESET / A4 ===== */
+.preset-row {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: clamp(6px, 1.5vw, 12px);
+  width: 100%;
+}
+
+.preset-field {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.preset-field label {
+  font-size: clamp(0.6rem, 1.7vw, 0.75rem);
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  color: #666;
+}
+
+.select-input,
+.number-input {
+  width: 100%;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 10px;
+  padding: clamp(8px, 1.5vh, 10px) clamp(10px, 2vw, 14px);
+  color: #e0e0e0;
+  font-size: clamp(0.8rem, 2.2vw, 0.95rem);
+  font-weight: 500;
+  font-family: inherit;
+  cursor: pointer;
+  transition: border-color 0.2s ease, background 0.2s ease;
+  -webkit-appearance: none;
+  appearance: none;
+}
+
+.select-input {
+  background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23888' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+  background-repeat: no-repeat;
+  background-position: right 10px center;
+  background-size: 16px;
+  padding-right: 34px;
+}
+
+.select-input:focus,
+.number-input:focus {
+  outline: none;
+  border-color: #00c6ff;
+  background: rgba(0, 198, 255, 0.08);
+}
+
+.select-input option {
+  background: #1a1a2e;
+  color: #e0e0e0;
+}
+
+.number-input::-webkit-outer-spin-button,
+.number-input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+.number-input {
+  -moz-appearance: textfield;
+  text-align: center;
+}
+
+/* ===== BOTÃO "SÓ UMA CORDA" ===== */
+#singleStringBtn.active {
+  background: rgba(255, 165, 0, 0.2);
+  border-color: #ffa500;
+  color: #ffa500;
+}
+
+/* ===== SELECTOR DE CORDAS COM 12 COLUNAS (para presets de 4-6 cordas) ===== */
+.string-selector {
+  grid-template-columns: repeat(auto-fit, minmax(44px, 1fr));
+  justify-content: center;
+}
+
+/* ===== RESPONSIVO ===== */
+@media (max-width: 480px) {
+  .preset-row {
+    grid-template-columns: 1.5fr 1fr;
+  }
+  .string-selector {
+    grid-template-columns: repeat(auto-fit, minmax(38px, 1fr));
+  }
+}
+
+@media (max-width: 380px) {
+  .preset-row {
+    grid-template-columns: 1fr 1fr;
+  }
+  .string-selector {
+    grid-template-columns: repeat(auto-fit, minmax(34px, 1fr));
+  }
+}
+
+/* ===== METRÔNOMO ===== */
+.metronome-panel {
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 14px;
+  overflow: hidden;
+  transition: background 0.2s ease;
+}
+
+.metronome-panel[open] {
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.metronome-panel summary {
+  list-style: none;
+  cursor: pointer;
+  padding: clamp(10px, 1.8vh, 14px) clamp(12px, 2.5vw, 18px);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: clamp(0.85rem, 2.2vw, 1rem);
+  font-weight: 600;
+  color: #ccc;
+  letter-spacing: 1px;
+  user-select: none;
+  transition: color 0.2s ease;
+}
+
+.metronome-panel summary::-webkit-details-marker {
+  display: none;
+}
+
+.metronome-panel summary::after {
+  content: "▸";
+  display: inline-block;
+  margin-left: 10px;
+  transition: transform 0.2s ease;
+  color: #666;
+  font-size: 0.9em;
+}
+
+.metronome-panel[open] summary::after {
+  transform: rotate(90deg);
+}
+
+.metronome-panel summary:hover {
+  color: #fff;
+}
+
+.bpm-display {
+  font-variant-numeric: tabular-nums;
+  color: #00c6ff;
+  font-size: 0.9em;
+  font-weight: 700;
+  margin-left: auto;
+  padding-right: 8px;
+}
+
+.metronome-body {
+  padding: 0 clamp(12px, 2.5vw, 18px) clamp(12px, 2vh, 16px);
+  display: flex;
+  flex-direction: column;
+  gap: clamp(8px, 1.5vh, 12px);
+}
+
+.metronome-row {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  gap: clamp(6px, 1.5vw, 12px);
+  align-items: center;
+}
+
+.metronome-row label {
+  font-size: clamp(0.65rem, 1.8vw, 0.8rem);
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  color: #666;
+  white-space: nowrap;
+}
+
+.bpm-range {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 100%;
+  height: 6px;
+  background: rgba(255, 255, 255, 0.08);
+  border-radius: 3px;
+  outline: none;
+  cursor: pointer;
+}
+
+.bpm-range::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #00c6ff, #0072ff);
+  cursor: pointer;
+  box-shadow: 0 0 12px rgba(0, 198, 255, 0.5);
+  transition: transform 0.15s ease;
+}
+
+.bpm-range::-webkit-slider-thumb:hover {
+  transform: scale(1.15);
+}
+
+.bpm-range::-moz-range-thumb {
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #00c6ff, #0072ff);
+  cursor: pointer;
+  border: none;
+  box-shadow: 0 0 12px rgba(0, 198, 255, 0.5);
+}
+
+.bpm-number {
+  width: 60px;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 8px;
+  padding: 6px 8px;
+  color: #fff;
+  font-size: 0.9rem;
+  font-weight: 600;
+  text-align: center;
+  font-family: inherit;
+  -moz-appearance: textfield;
+}
+
+.bpm-number::-webkit-outer-spin-button,
+.bpm-number::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.bpm-number:focus {
+  outline: none;
+  border-color: #00c6ff;
+}
+
+.metronome-play {
+  padding: 8px 16px !important;
+  font-size: 0.8rem !important;
+  white-space: nowrap;
+}
+
+.metronome-play.active {
+  background: linear-gradient(135deg, #ff416c, #ff4b2b) !important;
+  border-color: #ff4b2b !important;
+  color: #fff !important;
+  box-shadow: 0 4px 15px rgba(255, 75, 43, 0.4);
+}
+
+/* Indicador de batidas */
+.beat-indicator {
+  display: flex;
+  gap: 8px;
+  justify-content: center;
+  align-items: center;
+  padding: 8px 0 4px;
+}
+
+.beat-dot {
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.1);
+  border: 2px solid rgba(255, 255, 255, 0.15);
+  transition: background 0.08s ease, transform 0.08s ease,
+    border-color 0.08s ease, box-shadow 0.08s ease;
+}
+
+.beat-dot.active {
+  background: #00c6ff;
+  border-color: #00c6ff;
+  transform: scale(1.4);
+  box-shadow: 0 0 16px rgba(0, 198, 255, 0.8);
+}
+
+.beat-dot.active.accent {
+  background: #ffa500;
+  border-color: #ffa500;
+  box-shadow: 0 0 20px rgba(255, 165, 0, 0.9);
+}
+
+@media (max-width: 480px) {
+  .beat-dot {
+    width: 12px;
+    height: 12px;
+  }
+  .bpm-number {
+    width: 52px;
+    font-size: 0.8rem;
+  }
+}
